@@ -14,11 +14,10 @@ public class CustomClassVisitor extends ClassVisitor {
     @Override
     public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
         MethodVisitor methodVisitor = super.visitMethod(access, name, desc, signature, exceptions);
-        if (name.contains("<init>") || name.contains("main")){
-            return new NonStrandCheckAdapter(access, methodVisitor, name, desc);
+        if (name.contains("<init>")){
+            return new NonTryCatchAdapter(access, methodVisitor, name, desc);
         }else {
-            return new StrandCheckAdapter(access, methodVisitor, name, desc);
+            return new TryCatchAdapter(access, methodVisitor, name, desc);
         }
-
     }
 }
