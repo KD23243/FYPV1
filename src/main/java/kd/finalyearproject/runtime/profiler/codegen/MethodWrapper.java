@@ -29,7 +29,7 @@ public class MethodWrapper extends ClassLoader {
         ProcessBuilder processBuilder = new ProcessBuilder(command);
         processBuilder.redirectErrorStream(true);
         Process process = processBuilder.start();
-        OUT.printf(Constants.ANSI_CYAN + "[5/6] Running Executable..." + Constants.ANSI_RESET + "%n");
+        OUT.printf(Constants.ANSI_CYAN + "[5/6]"+ Constants.ANSI_RESET +" Running Executable"+ Constants.ANSI_CYAN +"..." + Constants.ANSI_RESET + "%n");
         try (BufferedReader reader = new BufferedReader(
                 new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8))) {
             reader.lines().forEach(OUT::println);

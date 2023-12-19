@@ -10,8 +10,8 @@ import java.nio.charset.StandardCharsets;
 
 public class FrontEnd {
     public static void initializeHTMLExport() throws IOException {
-        Constants.OUT.printf(" ○ Output: " + Constants.ANSI_YELLOW
-                + "ProfilerOutput.html" + Constants.ANSI_RESET + "%n");
+        String currentDirectory = System.getProperty("user.dir") + "/ProfilerOutput.html";
+        Constants.OUT.printf("   Output: " + "file://" + currentDirectory + "%n");
         String content = readData();
         String htmlData = FlameGraph.getSiteData(content);
         String fileName = "ProfilerOutput.html";

@@ -39,8 +39,8 @@ public class FlameGraph {
                 "      .btn {\n" +
                 "         box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);\n" +
                 "         border-radius: 10px;\n" +
-                "         border: 1px solid #20b6b0;\n" +
-                "         background-color: #20b6b0;\n" +
+                "         border: 1px solid #A8C89A;\n" +
+                "         background-color: #FFDFD3;\n" +
                 "         color: #1B2024;\n" +
                 "         font-weight: bold;\n" +
                 "         font-family: pragmatica, sans-serif;\n" +
@@ -67,7 +67,7 @@ public class FlameGraph {
                 "         margin-left: -40px;\n" +
                 "         box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);\n" +
                 "         padding-right: 40px;\n" +
-                "         width: 1920px;\n" +
+                "         width: 1680px;\n" +
                 "         background-color: #fbfbfd;\n" +
                 "         padding-bottom: 25px;\n" +
                 "      }\n" +
@@ -117,7 +117,7 @@ public class FlameGraph {
                 "         margin-top: 40px;\n" +
                 "         margin-bottom: 40px;\n" +
                 "         max-height: 780px;\n" +
-                "         width: 1840px;\n" +
+                "         width: 1590px;\n" +
                 "         border-radius: 20px;\n" +
                 "         overflow-y: auto;\n" +
                 "         overflow-x: auto;\n" +
@@ -144,7 +144,7 @@ public class FlameGraph {
                 "      }\n" +
                 "\n" +
                 "   </style>" +
-                "   <title>b7a-flamegraph</title>\n" +
+                "   <title>FYP-flamegraph</title>\n" +
                 "</head>\n" +
                 "\n" +
                 "<body>\n" +
@@ -178,14 +178,20 @@ public class FlameGraph {
                 contents +
                 "\n" +
                 "\n" +
+
+                "const customColorScale = d3.scaleOrdinal()\n" +
+                "  .range([\"#fbb4ae\", \"#b3cde3\", \"#ccebc5\", \"#decbe4\", \"#fed9a6\"]);" +
+                "\n" +
+
                 "var flameGraph = d3.flamegraph()\n" +
-                "    .width(1840)\n" +
+                "    .width(1590)\n" +
                 "    .selfValue(false)\n" +
                 "    .cellHeight(18)\n" +
                 "    .transitionDuration(750)\n" +
                 "    .minFrameSize(5)\n" +
                 "    .transitionEase(d3.easeCubic)\n" +
                 "    .sort(false)\n" +
+                "    .color(customColorScale)\n" +
                 "    .onClick(onClick)\n" +
                 "    .differential(false);\n" +
                 "\n" +
