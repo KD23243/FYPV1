@@ -8,8 +8,6 @@ import kd.finalyearproject.runtime.profiler.codegen.MethodWrapper;
 import kd.finalyearproject.runtime.profiler.util.Constants;
 import kd.finalyearproject.runtime.profiler.util.CustomException;
 import org.apache.commons.io.FileUtils;
-import org.benf.cfr.reader.api.CfrDriver;
-
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -26,7 +24,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

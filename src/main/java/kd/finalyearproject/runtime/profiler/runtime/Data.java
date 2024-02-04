@@ -34,12 +34,7 @@ public class Data {
 
 
     private String getFormattedStats() {
-
-//        int time = (int) this.totalTime;
-
         int time = (int) this.totalTime;
-//        int time = 500;
-
         String[] stackTrace = new String[]{this.name};
 
         // create the string representation of the output
