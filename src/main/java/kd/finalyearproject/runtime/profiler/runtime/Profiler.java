@@ -23,8 +23,6 @@ public class Profiler {
     private static List<String> skippedList = new ArrayList<>();
     private static Set<String> skippedClasses = new HashSet<>(skippedList);
 
-    private static final String GENERATED_METHOD_PREFIX = "$gen$";
-
     protected Profiler() {
         shutDownHookProfiler();
         try {
@@ -49,33 +47,6 @@ public class Profiler {
         return stack.get(2).getMethodName() + "()";
     }
 
-    public void removeDuplicates(List<String> list) {
-        List<String> newList = new ArrayList<>();
-        for (String element : list) {
-            if (!newList.contains(element)) {
-                newList.add(element);
-            }
-        }
-        list.clear();
-        list.addAll(newList);
-    }
-
-    public void start(int id) {
-        String name = getStackTrace();
-        if (!blockedMethods.contains(getMethodName() + id)) {
-            Data p = (Data) this.profiles.get(name);
-            if (p == null) {
-                p = new Data(name);
-                this.profiles.put(name, p);
-                this.profilesStack.add(p);
-            }
-            p.start();
-            methodNames.add(getMethodName()); // add the current method name to the methodNames set
-            removeDuplicates(blockedMethods);
-        }
-        blockedMethods.remove(getMethodName() + id);
-    }
-
     public void start() {
         String name = getStackTrace();
         Data p = (Data) this.profiles.get(name);
@@ -87,19 +58,6 @@ public class Profiler {
         p.start();
         methodNames.add(getMethodName()); // add the current method name to the methodNames set
 //        removeDuplicates(blockedMethods);
-    }
-
-    public void stop(String strandState, int id) {
-        String name = getStackTrace();
-        Data p = (Data) this.profiles.get(name);
-        if (strandState.equals("RUNNABLE")) {
-            if (p == null) {
-            } else {
-                p.stop();
-            }
-        } else {
-            blockedMethods.add(getMethodName() + id);
-        }
     }
 
     public void stop() {
@@ -163,27 +121,5 @@ public class Profiler {
 //        }
 
         return result.toString();
-    }
-
-    // This method checks if the substring of the encoded identifier starting
-    // from the given index represents a Unicode code point
-    private static boolean isUnicodePoint(String encodedName, int index) {
-        return (containsOnlyDigits(encodedName.substring(index + 1, index + 5)));
-    }
-
-    // This method takes a decoded method name as input and removes any generated method prefixes from it
-    private static String decodeGeneratedMethodName(String decodedName) {
-        return decodedName.startsWith(GENERATED_METHOD_PREFIX) ?
-                decodedName.substring(GENERATED_METHOD_PREFIX.length()) : decodedName;
-    }
-
-    // This method checks if the given string contains only digits
-    private static boolean containsOnlyDigits(String digitString) {
-        for (int i = 0; i < digitString.length(); i++) {
-            if (!Character.isDigit(digitString.charAt(i))) {
-                return false;
-            }
-        }
-        return true;
     }
 }
