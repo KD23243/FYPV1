@@ -12,8 +12,9 @@ public class FrontEnd {
     public static void initializeHTMLExport() throws IOException {
         String currentDirectory = System.getProperty("user.dir") + "/ProfilerOutput.html";
         Constants.OUT.printf("   Output: " + "file://" + currentDirectory + "%n");
-        String content = readData();
-        String htmlData = FlameGraph.getSiteData(content);
+        String flameGraphData = readData("performance_report.json");
+        String functionData = readData("OptimizeData.json");
+        String htmlData = FlameGraph.getSiteData(flameGraphData, functionData);
         String fileName = "ProfilerOutput.html";
         FileWriter fileWriter = null;
         try {
@@ -33,9 +34,9 @@ public class FrontEnd {
         }
     }
 
-    private static String readData() throws IOException {
+    private static String readData(String filename) throws IOException {
         try (BufferedReader reader = new BufferedReader(
-                new FileReader("performance_report.json", StandardCharsets.UTF_8))) {
+                new FileReader(filename, StandardCharsets.UTF_8))) {
             StringBuilder contents = new StringBuilder();
             String line;
             while ((line = reader.readLine()) != null) {

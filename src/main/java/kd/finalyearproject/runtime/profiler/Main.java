@@ -251,6 +251,8 @@ public class Main {
                     OUT.printf("%n" + Constants.ANSI_CYAN
                             + "[6/6]" + Constants.ANSI_RESET + " Generating Output" + Constants.ANSI_CYAN + "..." + Constants.ANSI_RESET + "%n");
                     Thread.sleep(100);
+                    decompileJar();
+                    printMethodsAndBodiesToFile();
                     initializeCPUParser(skipFunctionString);
                     deleteFileIfExists("usedPathsList.txt");
                     deleteFileIfExists("CpuPre.json");
@@ -259,8 +261,7 @@ public class Main {
                     deleteTempData();
                     initializeHTMLExport();
                     deleteFileIfExists("performance_report.json");
-                    decompileJar();
-                    printMethodsAndBodiesToFile();
+                    deleteFileIfExists("OptimizeData.json");
                     deleteDirectory(new File("UserData"));
                     OUT.printf("========================================================================================================================" + "%n");
                 } catch (IOException e) {
@@ -375,12 +376,12 @@ public class Main {
         return originJarArgs;
     }
 
-    private static void decompileJar()
-            throws IOException, InterruptedException {
+    private static void decompileJar() throws IOException, InterruptedException {
         String[] decompileCommand = {
                 "java",
-                "-jar",
-                "cfr-0.152.jar",
+                "-cp",
+                getClasspath(),
+                "org.benf.cfr.reader.Main",
                 "--outputdir",
                 "UserData",
                 originJarName
@@ -392,6 +393,10 @@ public class Main {
         if (decompileExitCode != 0) {
             throw new RuntimeException("Decompilation failed. Exit code: " + decompileExitCode);
         }
+    }
+
+    private static String getClasspath() {
+        return System.getProperty("java.class.path");
     }
 }
 

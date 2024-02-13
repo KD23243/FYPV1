@@ -1,7 +1,7 @@
 package kd.finalyearproject.runtime.profiler.ui;
 
 public class FlameGraph {
-    static String getSiteData(String contents) {
+    static String getSiteData(String contents, String functionData) {
         String htmlCode = "<!DOCTYPE html>\n" +
                 "<html lang=\"en\">\n" +
                 "\n" +
@@ -167,6 +167,12 @@ public class FlameGraph {
                 "      </div>\n" +
                 "      <div id=\"chart\"></div>\n" +
                 "      <div id=\"details\"></div>\n" +
+                "<div style=\"position: absolute; top: 40%; left: 5%; width: 40%; height: 50%;\">\n" +
+                "      <textarea id=\"leftTextarea\" style=\"width: 100%; height: 100%;\"></textarea>\n" +
+                "   </div>\n" +
+                "   <div style=\"position: absolute; top: 40%; right: 5%; width: 40%; height: 50%;\">\n" +
+                "      <textarea style=\"width: 100%; height: 100%;\"></textarea>\n" +
+                "   </div>" +
                 "   </div>\n" +
                 "   <script type=\"text/javascript\" src=\"https://d3js.org/d3.v7.js\"></script>\n" +
                 "   <script type=\"text/javascript\"\n" +
@@ -175,7 +181,8 @@ public class FlameGraph {
                 "   <script type=\"text/javascript\">\n" +
                 "\n" +
                 "\n" +
-                contents +
+                contents + "\n" +
+                "var funcData = " + functionData  +"\n" +
                 "\n" +
                 "\n" +
 
@@ -288,7 +295,24 @@ public class FlameGraph {
                 "\n" +
                 "      // Define a function to logs a message to the console\n" +
                 "      function onClick(d) {\n" +
-                "         console.info(\"Clicked on \" + d.data.name);\n" +
+                "    var leftTextarea = document.querySelector('textarea:nth-of-type(1)');\n" +
+                "    var parts = d.data.name.split('.');\n" +
+                "    var methodName = parts[parts.length - 1];\n" +
+                "    methodName = methodName.replace(/\\([^()]*\\)/g, '');\n" +
+                "    leftTextarea.value = '';\n" +
+                "\n" +
+                "    // Search for the method in funcData\n" +
+                "    var foundMethod = funcData.find(function(method) {\n" +
+                "        return method.name === methodName;\n" +
+                "    });\n" +
+                "\n" +
+                "    // If method is found, print its body in the console and the left text area\n" +
+                "    if (foundMethod) {\n" +
+                "        console.log(\"Method body:\", foundMethod.body);\n" +
+                "        leftTextarea.value = foundMethod.body;\n" +
+                "    } else {\n" +
+                "        console.log(\"Method not found in funcData:\", methodName);\n" +
+                "    }\n" +
                 "      }\n" +
                 "\n" +
                 "   </script>\n" +
