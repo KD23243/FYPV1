@@ -50,7 +50,7 @@ public class FrontEnd {
     }
 
     private static String readFlameGraphCode(String flameGraphName) {
-        InputStream inputStream = Main.class.getResourceAsStream("/FlameGraph/" + flameGraphName + ".html");
+        InputStream inputStream = Main.class.getResourceAsStream("/com/d3flamegraph/" + flameGraphName + ".html");
 
         String fileContent = null;
         if (inputStream != null) {
