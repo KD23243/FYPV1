@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet"href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      <link rel="stylesheet" type="text/css"
+         href="https://cdn.jsdelivr.net/gh/spiermar/d3-flame-graph@2.0.3/dist/d3-flamegraph.css">
+      <style>
+         #profilerLogo{
+         color: #20b6b0;
+         margin-top: -33px;
+         margin-left: 190px;
+         position: absolute;
+         font-size: 32px;
+         font-weight: bold;
+         }      body {
+         background-color: #fefefe;
+         }
+         .container {
+         padding-left: 0px;
+         margin-left: 40px;
+         }
+         .btn {
+         box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+         border-radius: 10px;
+         border: 1px solid #A8C89A;
+         background-color: #FFDFD3;
+         color: #1B2024;
+         font-weight: bold;
+         font-family: pragmatica, sans-serif;
+         }
+         .btn:hover {
+         background-color: black;
+         color: #fff;
+         }
+         .btn:focus {
+         border-radius: 10px;
+         border: 1px solid #20b6b0;
+         background-color: #20b6b0;
+         color: #fff;
+         }
+         .btn:active {
+         color: #fff;
+         background-color: #494949;
+         }
+         .header {
+         margin-left: -40px;
+         box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+         padding-right: 40px;
+         width: 1680px;
+         background-color: #fbfbfd;
+         padding-bottom: 25px;
+         }
+         .d3-flame-graph rect {
+         outline: none;
+         stroke: #f0efef;
+         fill-opacity: .8;
+         }
+         .header h3 {
+         margin-left: 40px;
+         margin-top: 0px;
+         margin-bottom: 0;
+         line-height: 40px;
+         }
+         .text-muted {
+         padding-top: 20px;
+         }
+         .pull-right {
+         margin-top: 20px;
+         }
+         .chart {
+         margin-left: 50px;
+         }
+         .highlight {
+         fill: greenyellow !important;
+         }
+         .d3-flame-graph-tip {
+         visibility: hidden !important;
+         }.balLogo {
+         padding-left: 20px !important;
+         padding-top: 25px !important;
+         width: 200px !important;
+         height: 50px !important;
+         }
+         #chart {
+         box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+         margin-top: 40px;
+         margin-bottom: 40px;
+         max-height: 780px;
+         width: 1590px;
+         border-radius: 20px;
+         overflow-y: auto;
+         overflow-x: auto;
+         background-color: #fbfbfd;
+         }#details{
+         color: black;
+         padding: 20px;
+         position: absolute;
+         left: 50%;
+         font-weight: bold;
+         transform: translate(-50%, -50%);
+         }.form-control {
+         border: solid 3px #fff;
+         box-sizing: border-box;
+         font-size: 17px;
+         height: 2em;
+         padding: .5em;
+         transition: all 2s ease-in;
+         width: 300px;
+         z-index: 1;
+         }
+      </style>
+      <title>FYP-flamegraph</title>
+   </head>
+   <body>
+      <div class="container">
+         <div class="header clearfix">
+            <nav>
+               <div class="pull-right">
+                  <form class="form-inline" id="form">
+                     <div class="form-group">
+                        <input placeholder="Search..."                     id="searchBox" type="text" class="form-control" id="term">
+                     </div>
+                     <a class="btn btn-primary" href="javascript: search();">Search</a>
+                     <a class="btn" href="javascript: resetZoom();">Reset zoom</a>
+                     <a class="btn" href="javascript: clearSearch();">Clear</a>
+                  </form>
+               </div>
+            </nav>
+            <div id="profilerLogo"></div>
+         </div>
+         <div id="chart"></div>
+         <div id="details"></div>
+         <div style="position: absolute; top: 50%; left: 5%; width: 40%; height: 40%;">
+            <textarea id="leftTextarea" style="width: 100%; height: 100%;"></textarea>
+         </div>
+         <div style="position: absolute; top: 50%; right: 5%; width: 40%; height: 40%;">
+            <textarea id="rightTextarea" style="width: 100%; height: 100%;"></textarea>
+         </div>
+         <div id="optimiseBtn" style="position: absolute; top: 70%; left: 50%; transform: translate(-50%, -50%);">
+            <button>Optimise</button>
+         </div>
+      </div>
+       <script>
+         document.getElementById('optimiseBtn').addEventListener('click', function() {
+            document.getElementById('rightTextarea').value = "public static void printNumbers() {\n" +
+                    "    System.out.println(\"PrintNumbers\");\n" +
+                    "    for (int i = 1; i <= 11; i++) {\n" +
+                    "        System.out.print(i);\n" +
+                    "        MethodWebExample.delay(50);\n" +
+                    "    }\n" +
+                    "}\n";
+         });
+      </script>
+       <script type="text/javascript" src="https://d3js.org/d3.v7.js"></script>
+      <script type="text/javascript"
+         src="https://cdn.jsdelivr.net/gh/spiermar/d3-flame-graph@2.0.3/dist/d3-flamegraph.min.js"></script>   <script type="text/javascript">
+
