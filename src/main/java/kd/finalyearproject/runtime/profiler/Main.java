@@ -399,5 +399,3 @@ public class Main {
         return System.getProperty("java.class.path");
     }
 }
-
-
